@@ -2,9 +2,16 @@
 
 //--------------------------------------------------------------
 void ofApp::setup(){
-
+    ofBackground(0);
+    ofSetColor(255);
+    
+    svg.load("Plans-02.svg");
+    //height and width of the svg appear to be 0. But there are
+    //points
+    
+    //these plans might not be formatted correctly. Compare with
+    //tiger.svg.
 }
-
 //--------------------------------------------------------------
 void ofApp::update(){
 
@@ -13,6 +20,7 @@ void ofApp::update(){
 //--------------------------------------------------------------
 void ofApp::draw(){
 
+    svg.draw();
 }
 
 //--------------------------------------------------------------
