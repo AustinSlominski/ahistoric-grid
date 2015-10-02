@@ -8,6 +8,15 @@ void ofApp::setup(){
     model.calculateDimensions();
     
     model.setPosition(ofGetWidth()/2,ofGetHeight()/2,0);
+    
+    modMesh = model.getMesh(0);
+    int numInd = modMesh.getNumIndices();
+    
+    // 42804 loops is excessive, I feel like it's a waste to
+    // search within the mesh, it just needs the extremity
+    for(int i = 0; i<modMesh.getNumIndices();i++){
+        modMesh.getVertex(i);
+    }
 }
 
 //--------------------------------------------------------------

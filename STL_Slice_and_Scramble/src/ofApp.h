@@ -2,7 +2,6 @@
 
 #include "ofMain.h"
 #include "ofxAssimpModelLoader.h"
-#include "ofVboMesh.h"
 
 class ofApp : public ofBaseApp{
 
@@ -22,6 +21,7 @@ class ofApp : public ofBaseApp{
 		void gotMessage(ofMessage msg);
 		
         ofMesh grid;
+        ofMesh modMesh;
         ofxAssimpModelLoader model;
         ofLight light;
     
