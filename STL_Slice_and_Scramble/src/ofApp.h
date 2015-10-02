@@ -21,6 +21,9 @@ class ofApp : public ofBaseApp{
 		void dragEvent(ofDragInfo dragInfo);
 		void gotMessage(ofMessage msg);
 		
+        ofMesh grid;
         ofxAssimpModelLoader model;
         ofLight light;
+    
+        vector<ofPoint> modelBoundingBox;
 };
