@@ -2,17 +2,30 @@
 
 //--------------------------------------------------------------
 void ofApp::setup(){
-
+    ofBackground(0);
+    //loadModel(file,bool optimize)
+    model.loadModel("stalin.stl",true);
+    model.setPosition(ofGetWidth()/2,ofGetHeight()/2,0);
 }
 
 //--------------------------------------------------------------
 void ofApp::update(){
-
+    model.update();
 }
 
 //--------------------------------------------------------------
 void ofApp::draw(){
-
+    ofSetColor(255);
+    
+    ofEnableBlendMode(OF_BLENDMODE_ALPHA);
+    ofEnableDepthTest();
+    
+    glShadeModel(GL_SMOOTH);
+    light.enable();
+    ofEnableSeparateSpecularLight();
+    model.drawWireframe();
+    
+    glEnable(GL_NORMALIZE);
 }
 
 //--------------------------------------------------------------

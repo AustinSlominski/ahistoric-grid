@@ -1,6 +1,8 @@
 #pragma once
 
 #include "ofMain.h"
+#include "ofxAssimpModelLoader.h"
+#include "ofVboMesh.h"
 
 class ofApp : public ofBaseApp{
 
@@ -19,4 +21,6 @@ class ofApp : public ofBaseApp{
 		void dragEvent(ofDragInfo dragInfo);
 		void gotMessage(ofMessage msg);
 		
+        ofxAssimpModelLoader model;
+        ofLight light;
 };
