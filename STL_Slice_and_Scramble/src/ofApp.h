@@ -20,7 +20,11 @@ class ofApp : public ofBaseApp{
 		void dragEvent(ofDragInfo dragInfo);
 		void gotMessage(ofMessage msg);
 		
+        ofEasyCam cam;
+    
         ofMesh grid;
+        ofPoint gridMin,gridMax,gridCenter;
+    
         ofMesh modMesh;
         ofxAssimpModelLoader model;
         ofLight light;

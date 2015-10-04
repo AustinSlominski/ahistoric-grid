@@ -6,17 +6,36 @@ void ofApp::setup(){
 
     model.loadModel("stalin.stl",true);
     model.calculateDimensions();
+    //model.setPosition(ofGetWidth()/2,ofGetHeight()/2,0);
     
-    model.setPosition(ofGetWidth()/2,ofGetHeight()/2,0);
+    gridCenter = model.getSceneCenter();
+    gridMin = model.getSceneMin(true)+gridCenter;
+    gridMax = model.getSceneMax(true)+gridCenter;
     
+    ofPoint g1 = ofPoint(gridMin.x,0,0);
+    ofPoint g2 = ofPoint(gridMax.x,0,0);
+    ofPoint g3 = ofPoint(0,gridMin.y,0);
+    ofPoint g4 = ofPoint(0,gridMax.y,0);
+    ofPoint g5 = ofPoint(0,0,gridMin.z);
+    ofPoint g6 = ofPoint(0,0,gridMax.z);
+    
+    
+    ofPoint g7 = ofPoint(gridMax.x,gridMax.y,gridMin.z);
+    ofPoint g8 = ofPoint(gridMax.x,gridMin.y,gridMax.z);
+    
+    grid.addVertex(model.getPosition());
+    //grid.addVertex(g1);
+    //grid.addVertex(g2);
+    //grid.addVertex(g3);
+    //grid.addVertex(g4);
+    //grid.addVertex(g5);
+    //grid.addVertex(g6);
+    ofMatrix4x4 mat = model.getModelMatrix();
+    
+    grid.setMode(OF_PRIMITIVE_POINTS);
     modMesh = model.getMesh(0);
-    int numInd = modMesh.getNumIndices();
-    
-    // 42804 loops is excessive, I feel like it's a waste to
-    // search within the mesh, it just needs the extremity
-    for(int i = 0; i<modMesh.getNumIndices();i++){
-        modMesh.getVertex(i);
-    }
+    glEnable(GL_POINT_SMOOTH);
+    glPointSize(10);
 }
 
 //--------------------------------------------------------------
@@ -30,20 +49,19 @@ void ofApp::draw(){
     ofEnableDepthTest();
     ofEnableBlendMode(OF_BLENDMODE_ALPHA);//sets blendmode for drawing
     
-    //create mesh based on a variable grid width.
-    //model.width / gridWidth
-    
-        //grid.addVertex(ofPoint());
-    
     //Model lighting and shading
         glShadeModel(GL_SMOOTH);
         light.enable();
         ofEnableSeparateSpecularLight();
     
     //Model and mesh drawing
-    grid.draw();
-    model.drawWireframe();
+    ofSetColor(ofColor(100,200,240));
     
+    cam.begin();
+        grid.draw();
+        ofSetColor(0);
+        model.drawWireframe();
+    cam.end();
     ofxAssimpMeshHelper & meshHelper = model.getMeshHelper(0); //seems to provide more information about loaded model
 
 }
