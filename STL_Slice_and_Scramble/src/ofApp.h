@@ -22,8 +22,7 @@ class ofApp : public ofBaseApp{
 		
         ofEasyCam cam;
     
-        ofMesh grid;
-        ofPoint gridMin,gridMax,gridCenter;
+        ofMesh grid, mMesh;
     
         ofMesh modMesh;
         ofxAssimpModelLoader model;
