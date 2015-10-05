@@ -8,6 +8,7 @@ void ofApp::setup(){
     model.calculateDimensions();
     //model.setPosition(ofGetWidth()/2,ofGetHeight()/2,0);
     mMesh = model.getMesh(0);
+    grid.setupIndicesAuto();
     
     
     //Generate Bounding Box
@@ -15,12 +16,14 @@ void ofApp::setup(){
     ofVec3f gridMin = (model.getSceneMin(true)*model.getNormalizedScale())+gridCenter;
     ofVec3f gridMax = (model.getSceneMax(true)*model.getNormalizedScale())+gridCenter;
     
-    ofPoint g1 = ofPoint(gridMin.x,0,0);
-    ofPoint g2 = ofPoint(gridMax.x,0,0);
-    ofPoint g3 = ofPoint(0,-gridMin.y,0);
-    ofPoint g4 = ofPoint(0,-gridMax.y,0);
-    ofPoint g5 = ofPoint(0,0,gridMin.z);
-    ofPoint g6 = ofPoint(0,0,gridMax.z);
+    ofPoint g1 = ofPoint(gridMax.x,-gridMax.y,gridMin.z);
+    ofPoint g2 = ofPoint(gridMax.x,-gridMax.y,gridMax.z);
+    ofPoint g3 = ofPoint(gridMin.x,-gridMax.y,gridMax.z);
+    ofPoint g4 = ofPoint(gridMin.x,-gridMax.y,gridMin.z);
+    ofPoint g5 = ofPoint(gridMax.x,-gridMin.y,gridMin.z);
+    ofPoint g6 = ofPoint(gridMax.x,-gridMin.y,gridMax.z);
+    ofPoint g7 = ofPoint(gridMin.x,-gridMin.y,gridMax.z);
+    ofPoint g8 = ofPoint(gridMin.x,-gridMin.y,gridMin.z);
     
     grid.addVertex(gridCenter);
     grid.addVertex(g1);
@@ -29,6 +32,8 @@ void ofApp::setup(){
     grid.addVertex(g4);
     grid.addVertex(g5);
     grid.addVertex(g6);
+    grid.addVertex(g7);
+    grid.addVertex(g8);
     
     grid.setMode(OF_PRIMITIVE_POINTS);
     
@@ -61,6 +66,7 @@ void ofApp::draw(){
         ofSetColor(100);
         model.drawWireframe();
     cam.end();
+    
     ofxAssimpMeshHelper & meshHelper = model.getMeshHelper(0); //seems to provide more information about loaded model
 
 }
