@@ -6,6 +6,7 @@ void ofApp::setup(){
 
     model.loadModel("stalin.stl",true);
     model.calculateDimensions();
+    model.setRotation(0,180,0,0,1);
     //model.setPosition(ofGetWidth()/2,ofGetHeight()/2,0);
     mMesh = model.getMesh(0);
     grid.setupIndicesAuto();
@@ -15,15 +16,15 @@ void ofApp::setup(){
     ofVec3f gridCenter = model.getSceneCenter();
     ofVec3f gridMin = (model.getSceneMin(true)*model.getNormalizedScale())+gridCenter;
     ofVec3f gridMax = (model.getSceneMax(true)*model.getNormalizedScale())+gridCenter;
-    
-    ofPoint g1 = ofPoint(gridMax.x,-gridMax.y,gridMin.z);
-    ofPoint g2 = ofPoint(gridMax.x,-gridMax.y,gridMax.z);
-    ofPoint g3 = ofPoint(gridMin.x,-gridMax.y,gridMax.z);
-    ofPoint g4 = ofPoint(gridMin.x,-gridMax.y,gridMin.z);
-    ofPoint g5 = ofPoint(gridMax.x,-gridMin.y,gridMin.z);
-    ofPoint g6 = ofPoint(gridMax.x,-gridMin.y,gridMax.z);
-    ofPoint g7 = ofPoint(gridMin.x,-gridMin.y,gridMax.z);
-    ofPoint g8 = ofPoint(gridMin.x,-gridMin.y,gridMin.z);
+    //240 offset along y
+    ofPoint g1 = ofPoint(gridMax.x,gridMax.y,gridMin.z);
+    ofPoint g2 = ofPoint(gridMax.x,gridMax.y,gridMax.z);
+    ofPoint g3 = ofPoint(gridMin.x,gridMax.y,gridMax.z);
+    ofPoint g4 = ofPoint(gridMin.x,gridMax.y,gridMin.z);
+    ofPoint g5 = ofPoint(gridMax.x,gridMin.y,gridMin.z);
+    ofPoint g6 = ofPoint(gridMax.x,gridMin.y,gridMax.z);
+    ofPoint g7 = ofPoint(gridMin.x,gridMin.y,gridMax.z);
+    ofPoint g8 = ofPoint(gridMin.x,gridMin.y,gridMin.z);
     
     grid.addVertex(gridCenter);
     grid.addVertex(g1);
@@ -35,9 +36,8 @@ void ofApp::setup(){
     grid.addVertex(g7);
     grid.addVertex(g8);
     
-    grid.setMode(OF_PRIMITIVE_POINTS);
+    grid.setMode(OF_PRIMITIVE_LINE_STRIP);
     
-    modMesh = model.getMesh(0);
     glEnable(GL_POINT_SMOOTH);
     glPointSize(15);
 }

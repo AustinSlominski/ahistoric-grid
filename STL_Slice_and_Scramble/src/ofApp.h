@@ -24,7 +24,6 @@ class ofApp : public ofBaseApp{
     
         ofMesh grid, mMesh;
     
-        ofMesh modMesh;
         ofxAssimpModelLoader model;
         ofLight light;
     
