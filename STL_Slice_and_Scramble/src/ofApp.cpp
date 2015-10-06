@@ -4,39 +4,38 @@
 void ofApp::setup(){
     ofBackground(0);
 
-    model.loadModel("stalin.stl",true);
+    model.loadModel("statue_head.obj",true);
     model.calculateDimensions();
-    model.setRotation(0,180,0,0,1);
-    //model.setPosition(ofGetWidth()/2,ofGetHeight()/2,0);
+    model.optimizeScene();
+    model.setPosition(0,0,0);
     mMesh = model.getMesh(0);
     grid.setupIndicesAuto();
     
+    ofVec3f gridCenter = model.getSceneCenter(); //IS actually center
+    ofVec3f gridMin    = model.getSceneMin()*model.getNormalizedScale()+gridCenter;
+    ofVec3f gridMax    = model.getSceneMax()*model.getNormalizedScale()+gridCenter;
     
-    //Generate Bounding Box
-    ofVec3f gridCenter = model.getSceneCenter();
-    ofVec3f gridMin = (model.getSceneMin(true)*model.getNormalizedScale())+gridCenter;
-    ofVec3f gridMax = (model.getSceneMax(true)*model.getNormalizedScale())+gridCenter;
-    //240 offset along y
-    ofPoint g1 = ofPoint(gridMax.x,gridMax.y,gridMin.z);
-    ofPoint g2 = ofPoint(gridMax.x,gridMax.y,gridMax.z);
-    ofPoint g3 = ofPoint(gridMin.x,gridMax.y,gridMax.z);
-    ofPoint g4 = ofPoint(gridMin.x,gridMax.y,gridMin.z);
-    ofPoint g5 = ofPoint(gridMax.x,gridMin.y,gridMin.z);
-    ofPoint g6 = ofPoint(gridMax.x,gridMin.y,gridMax.z);
-    ofPoint g7 = ofPoint(gridMin.x,gridMin.y,gridMax.z);
-    ofPoint g8 = ofPoint(gridMin.x,gridMin.y,gridMin.z);
+    mBox.push_back(ofPoint(gridMax.x,gridMax.y,gridMin.z));
+    mBox.push_back(ofPoint(gridMax.x,gridMax.y,gridMax.z));
+    mBox.push_back(ofPoint(gridMin.x,gridMax.y,gridMax.z));
+    mBox.push_back(ofPoint(gridMin.x,gridMax.y,gridMin.z));
+    mBox.push_back(ofPoint(gridMax.x,gridMin.y,gridMin.z));
+    mBox.push_back(ofPoint(gridMax.x,gridMin.y,gridMax.z));
+    mBox.push_back(ofPoint(gridMin.x,gridMin.y,gridMax.z));
+    mBox.push_back(ofPoint(gridMin.x,gridMin.y,gridMin.z));
     
-    grid.addVertex(gridCenter);
-    grid.addVertex(g1);
-    grid.addVertex(g2);
-    grid.addVertex(g3);
-    grid.addVertex(g4);
-    grid.addVertex(g5);
-    grid.addVertex(g6);
-    grid.addVertex(g7);
-    grid.addVertex(g8);
+    grid.addVertices(mBox);
+    grid.setMode(OF_PRIMITIVE_POINTS);
     
-    grid.setMode(OF_PRIMITIVE_LINE_STRIP);
+    //euler lines
+    euler.addVertex(ofPoint(-300,0,0));
+    euler.addVertex(ofPoint(300,0,0));
+    euler.addVertex(ofPoint(0,-300,0));
+    euler.addVertex(ofPoint(0,300,0));
+    euler.addVertex(ofPoint(0,0,-300));
+    euler.addVertex(ofPoint(0,0,300));
+    
+    euler.setMode(OF_PRIMITIVE_LINES);
     
     glEnable(GL_POINT_SMOOTH);
     glPointSize(15);
@@ -51,24 +50,15 @@ void ofApp::update(){
 void ofApp::draw(){
     ofSetColor(255);
     ofEnableDepthTest();
-    ofEnableBlendMode(OF_BLENDMODE_ALPHA);//sets blendmode for drawing
-    
-    //Model lighting and shading
-        //glShadeModel(GL_SMOOTH);
-        //light.enable();
-        //ofEnableSeparateSpecularLight();
-    
-    //Model and mesh drawing
-    ofSetColor(ofColor(100,200,240));
     
     cam.begin();
-        grid.draw();
+        ofSetColor(ofColor(200,200,200));
+        euler.draw();
+        ofSetColor(ofColor(100,200,240));
+        grid.drawWireframe();
         ofSetColor(100);
         model.drawWireframe();
     cam.end();
-    
-    ofxAssimpMeshHelper & meshHelper = model.getMeshHelper(0); //seems to provide more information about loaded model
-
 }
 
 //--------------------------------------------------------------

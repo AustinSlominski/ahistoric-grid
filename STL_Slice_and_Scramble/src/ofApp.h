@@ -22,10 +22,10 @@ class ofApp : public ofBaseApp{
 		
         ofEasyCam cam;
     
-        ofMesh grid, mMesh;
+        ofMesh grid, mMesh, euler;
     
         ofxAssimpModelLoader model;
         ofLight light;
     
-        vector<ofPoint> modelBoundingBox;
+        vector<ofPoint> mBox;
 };
