@@ -11,20 +11,22 @@ void ofApp::setup(){
     mMesh = model.getMesh(0);
     grid.setupIndicesAuto();
     
-    ofVec3f gridCenter = model.getSceneCenter(); //IS actually center
-    ofVec3f gridMin    = model.getSceneMin()*model.getNormalizedScale()+gridCenter;
-    ofVec3f gridMax    = model.getSceneMax()*model.getNormalizedScale()+gridCenter;
+    //ofVec3f gridCenter = model.getSceneCenter(); //IS actually center
     
-    mBox.push_back(ofPoint(gridMax.x,gridMax.y,gridMin.z));
-    mBox.push_back(ofPoint(gridMax.x,gridMax.y,gridMax.z));
-    mBox.push_back(ofPoint(gridMin.x,gridMax.y,gridMax.z));
-    mBox.push_back(ofPoint(gridMin.x,gridMax.y,gridMin.z));
-    mBox.push_back(ofPoint(gridMax.x,-gridMax.y,gridMin.z));//problem at gridMin
-    mBox.push_back(ofPoint(gridMax.x,-gridMax.y,gridMax.z));
-    mBox.push_back(ofPoint(gridMin.x,-gridMax.y,gridMax.z));
-    mBox.push_back(ofPoint(gridMin.x,-gridMax.y,gridMin.z));
+    ofVec3f gridMin    = model.getSceneMin()*model.getNormalizedScale();
+    ofVec3f gridMax    = model.getSceneMax()*model.getNormalizedScale();
+    //ofVec3f gridCenter = (gridMax+gridMin))/2;
     
-    grid.addVertex(grid.getCentroid());
+    mBox.push_back(ofPoint(gridMax.x,gridMax.y-gridCenter.y,gridMin.z));
+    mBox.push_back(ofPoint(gridMax.x,gridMax.y-gridCenter.y,gridMax.z));
+    mBox.push_back(ofPoint(gridMin.x,gridMax.y-gridCenter.y,gridMax.z));
+    mBox.push_back(ofPoint(gridMin.x,gridMax.y-gridCenter.y,gridMin.z));
+    mBox.push_back(ofPoint(gridMax.x,gridMin.y,gridMin.z));//problem at gridMin
+    mBox.push_back(ofPoint(gridMax.x,gridMin.y,gridMax.z));
+    mBox.push_back(ofPoint(gridMin.x,gridMin.y,gridMax.z));
+    mBox.push_back(ofPoint(gridMin.x,gridMin.y,gridMin.z));
+    
+    grid.addVertex(gridCenter );
     grid.addVertices(mBox);
     grid.setMode(OF_PRIMITIVE_POINTS);
     
