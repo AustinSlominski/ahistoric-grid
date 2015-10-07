@@ -11,24 +11,39 @@ void ofApp::setup(){
     mMesh = model.getMesh(0);
     grid.setupIndicesAuto();
     
-    //ofVec3f gridCenter = model.getSceneCenter(); //IS actually center
+    ofVec3f gridCenter = model.getSceneCenter(); //IS actually center
     
-    ofVec3f gridMin    = model.getSceneMin()*model.getNormalizedScale();
-    ofVec3f gridMax    = model.getSceneMax()*model.getNormalizedScale();
-    //ofVec3f gridCenter = (gridMax+gridMin))/2;
+    ofVec3f gridMin = model.getSceneMin()*model.getNormalizedScale();
+    ofVec3f gridMax = model.getSceneMax()*model.getNormalizedScale();
     
-    mBox.push_back(ofPoint(gridMax.x,gridMax.y-gridCenter.y,gridMin.z));
-    mBox.push_back(ofPoint(gridMax.x,gridMax.y-gridCenter.y,gridMax.z));
-    mBox.push_back(ofPoint(gridMin.x,gridMax.y-gridCenter.y,gridMax.z));
-    mBox.push_back(ofPoint(gridMin.x,gridMax.y-gridCenter.y,gridMin.z));
+    ofVec3f gDelta = (gridMax-gridMin)/2;
+    //float gW = sqrt((gridMax.x*gridMax.x)+(gridMin.x*gridMin.x));
+    //float gH = sqrt((gridMax.y*gridMax.y)+(gridMin.y*gridMin.y));
+    //float gD = sqrt((gridMax.z*gridMax.z)+(gridMin.z*gridMin.z));
+    /*
+    mBox.push_back(ofPoint(gridMax.x,gridMax.y,gridMin.z));
+    mBox.push_back(ofPoint(gridMax.x,gridMax.y,gridMax.z));
+    mBox.push_back(ofPoint(gridMin.x,gridMax.y,gridMax.z));
+    mBox.push_back(ofPoint(gridMin.x,gridMax.y,gridMin.z));
     mBox.push_back(ofPoint(gridMax.x,gridMin.y,gridMin.z));//problem at gridMin
     mBox.push_back(ofPoint(gridMax.x,gridMin.y,gridMax.z));
     mBox.push_back(ofPoint(gridMin.x,gridMin.y,gridMax.z));
     mBox.push_back(ofPoint(gridMin.x,gridMin.y,gridMin.z));
+    */
     
-    grid.addVertex(gridCenter );
+    mBox.push_back(ofPoint(gDelta.x,gDelta.y,-gDelta.z));
+    mBox.push_back(ofPoint(gDelta.x,gDelta.y,gDelta.z));
+    mBox.push_back(ofPoint(-gDelta.x,gDelta.y,gDelta.z));
+    mBox.push_back(ofPoint(-gDelta.x,gDelta.y,-gDelta.z));
+    mBox.push_back(ofPoint(gDelta.x,-gDelta.y,-gDelta.z));//problem at gridMin
+    mBox.push_back(ofPoint(gDelta.x,-gDelta.y,gDelta.z));
+    mBox.push_back(ofPoint(-gDelta.x,-gDelta.y,gDelta.z));
+    mBox.push_back(ofPoint(-gDelta.x,-gDelta.y,-gDelta.z));
+    
+    
+    grid.addVertex(gridCenter);
     grid.addVertices(mBox);
-    grid.setMode(OF_PRIMITIVE_POINTS);
+    grid.setMode(OF_PRIMITIVE_LINE_LOOP);
     
     //euler lines
     euler.addVertex(ofPoint(-300,0,0));
