@@ -7,43 +7,26 @@ void ofApp::setup(){
     model.loadModel("statue_head.obj",true);
     model.calculateDimensions();
     model.optimizeScene();
-    model.setPosition(0,0,0);
-    mMesh = model.getMesh(0);
+    gridCentroid = model.getSceneCenter()*model.getNormalizedScale();
+    model.setPosition(gridCentroid.x,gridCentroid.y,gridCentroid.z);
+    
+    gridMin = model.getSceneMin(true)*model.getNormalizedScale();
+    gridMax = model.getSceneMax(true)*model.getNormalizedScale();
+    
+    gridDim = (gridMax-gridMin)/2;
+    
+    mBox.push_back(ofPoint(gridDim.x,gridDim.y,-gridDim.z));
+    mBox.push_back(ofPoint(gridDim.x,gridDim.y,gridDim.z));
+    mBox.push_back(ofPoint(-gridDim.x,gridDim.y,gridDim.z));
+    mBox.push_back(ofPoint(-gridDim.x,gridDim.y,-gridDim.z));
+    mBox.push_back(ofPoint(gridDim.x,-gridDim.y,-gridDim.z));//problem at gridMin
+    mBox.push_back(ofPoint(gridDim.x,-gridDim.y,gridDim.z));
+    mBox.push_back(ofPoint(-gridDim.x,-gridDim.y,gridDim.z));
+    mBox.push_back(ofPoint(-gridDim.x,-gridDim.y,-gridDim.z));
+    
     grid.setupIndicesAuto();
-    
-    ofVec3f gridCenter = model.getSceneCenter(); //IS actually center
-    
-    ofVec3f gridMin = model.getSceneMin()*model.getNormalizedScale();
-    ofVec3f gridMax = model.getSceneMax()*model.getNormalizedScale();
-    
-    ofVec3f gDelta = (gridMax-gridMin)/2;
-    //float gW = sqrt((gridMax.x*gridMax.x)+(gridMin.x*gridMin.x));
-    //float gH = sqrt((gridMax.y*gridMax.y)+(gridMin.y*gridMin.y));
-    //float gD = sqrt((gridMax.z*gridMax.z)+(gridMin.z*gridMin.z));
-    /*
-    mBox.push_back(ofPoint(gridMax.x,gridMax.y,gridMin.z));
-    mBox.push_back(ofPoint(gridMax.x,gridMax.y,gridMax.z));
-    mBox.push_back(ofPoint(gridMin.x,gridMax.y,gridMax.z));
-    mBox.push_back(ofPoint(gridMin.x,gridMax.y,gridMin.z));
-    mBox.push_back(ofPoint(gridMax.x,gridMin.y,gridMin.z));//problem at gridMin
-    mBox.push_back(ofPoint(gridMax.x,gridMin.y,gridMax.z));
-    mBox.push_back(ofPoint(gridMin.x,gridMin.y,gridMax.z));
-    mBox.push_back(ofPoint(gridMin.x,gridMin.y,gridMin.z));
-    */
-    
-    mBox.push_back(ofPoint(gDelta.x,gDelta.y,-gDelta.z));
-    mBox.push_back(ofPoint(gDelta.x,gDelta.y,gDelta.z));
-    mBox.push_back(ofPoint(-gDelta.x,gDelta.y,gDelta.z));
-    mBox.push_back(ofPoint(-gDelta.x,gDelta.y,-gDelta.z));
-    mBox.push_back(ofPoint(gDelta.x,-gDelta.y,-gDelta.z));//problem at gridMin
-    mBox.push_back(ofPoint(gDelta.x,-gDelta.y,gDelta.z));
-    mBox.push_back(ofPoint(-gDelta.x,-gDelta.y,gDelta.z));
-    mBox.push_back(ofPoint(-gDelta.x,-gDelta.y,-gDelta.z));
-    
-    
-    grid.addVertex(gridCenter);
     grid.addVertices(mBox);
-    grid.setMode(OF_PRIMITIVE_LINE_LOOP);
+    grid.setMode(OF_PRIMITIVE_LINE_STRIP);
     
     //euler lines
     euler.addVertex(ofPoint(-300,0,0));
@@ -73,7 +56,7 @@ void ofApp::draw(){
         ofSetColor(ofColor(200,200,200));
         euler.draw();
         ofSetColor(ofColor(100,200,240));
-        grid.drawWireframe();
+        grid.drawFaces();
         ofSetColor(100);
         model.drawWireframe();
     cam.end();

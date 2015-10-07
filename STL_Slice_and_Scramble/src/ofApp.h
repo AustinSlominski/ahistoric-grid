@@ -21,9 +21,8 @@ class ofApp : public ofBaseApp{
 		void gotMessage(ofMessage msg);
 		
         ofEasyCam cam;
-    
         ofMesh grid, mMesh, euler;
-    
+        ofVec3f gridCentroid, gridMin, gridMax, gridDim;
         ofxAssimpModelLoader model;
         ofLight light;
     
