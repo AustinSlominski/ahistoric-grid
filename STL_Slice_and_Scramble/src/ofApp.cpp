@@ -25,11 +25,15 @@ void ofApp::setup(){
     mBox.addVertex(ofPoint(-mDim.x,-mDim.y,-mDim.z));
     */
      
-    gridUnit = 6;
-    gridDivision = mDim/gridUnit;
+    gridSub = 6;
+    gridDivision = mDim/gridSub;
     
-    for(int i=0;i<gridUnit;i++){
-        
+    for(int i=0;i<gridSub;i++){
+        for(int j=0;j<gridSub;j++){
+            for(int k=0;k<gridSub;k++){
+                grid.addVertex(ofPoint(gridDivision.x*k,gridDivision.y*j,gridDivision.z*i));
+            }
+        }
     }
     
     mBox.setupIndicesAuto();
