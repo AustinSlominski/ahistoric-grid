@@ -7,28 +7,37 @@ void ofApp::setup(){
     model.loadModel("statue_head.obj",true);
     model.calculateDimensions();
     model.optimizeScene();
-    gridCentroid = model.getSceneCenter()*model.getNormalizedScale();
-    model.setPosition(gridCentroid.x,gridCentroid.y,gridCentroid.z);
+    mCentroid = model.getSceneCenter()*model.getNormalizedScale();
+    model.setPosition(mCentroid.x,mCentroid.y,mCentroid.z);
     
-    gridMin = model.getSceneMin(true)*model.getNormalizedScale();
-    gridMax = model.getSceneMax(true)*model.getNormalizedScale();
+    mMin = model.getSceneMin(true)*model.getNormalizedScale();
+    mMax = model.getSceneMax(true)*model.getNormalizedScale();
+    mDim = mMax-mMin;
     
-    gridDim = (gridMax-gridMin)/2;
+    /*
+    mBox.addVertex(ofPoint(mDim.x,mDim.y,-mDim.z));
+    mBox.addVertex(ofPoint(mDim.x,mDim.y,mDim.z));
+    mBox.addVertex(ofPoint(-mDim.x,mDim.y,mDim.z));
+    mBox.addVertex(ofPoint(-mDim.x,mDim.y,-mDim.z));
+    mBox.addVertex(ofPoint(mDim.x,-mDim.y,-mDim.z));
+    mBox.addVertex(ofPoint(mDim.x,-mDim.y,mDim.z));
+    mBox.addVertex(ofPoint(-mDim.x,-mDim.y,mDim.z));
+    mBox.addVertex(ofPoint(-mDim.x,-mDim.y,-mDim.z));
+    */
+     
+    gridUnit = 6;
+    gridDivision = mDim/gridUnit;
     
-    mBox.push_back(ofPoint(gridDim.x,gridDim.y,-gridDim.z));
-    mBox.push_back(ofPoint(gridDim.x,gridDim.y,gridDim.z));
-    mBox.push_back(ofPoint(-gridDim.x,gridDim.y,gridDim.z));
-    mBox.push_back(ofPoint(-gridDim.x,gridDim.y,-gridDim.z));
-    mBox.push_back(ofPoint(gridDim.x,-gridDim.y,-gridDim.z));//problem at gridMin
-    mBox.push_back(ofPoint(gridDim.x,-gridDim.y,gridDim.z));
-    mBox.push_back(ofPoint(-gridDim.x,-gridDim.y,gridDim.z));
-    mBox.push_back(ofPoint(-gridDim.x,-gridDim.y,-gridDim.z));
+    for(int i=0;i<gridUnit;i++){
+        
+    }
     
+    mBox.setupIndicesAuto();
     grid.setupIndicesAuto();
-    grid.addVertices(mBox);
-    grid.setMode(OF_PRIMITIVE_LINE_STRIP);
-    
+    mBox.setMode(OF_PRIMITIVE_LINE_STRIP);
+    grid.setMode(OF_PRIMITIVE_POINTS);
     //euler lines
+    /*
     euler.addVertex(ofPoint(-300,0,0));
     euler.addVertex(ofPoint(300,0,0));
     euler.addVertex(ofPoint(0,-300,0));
@@ -37,6 +46,7 @@ void ofApp::setup(){
     euler.addVertex(ofPoint(0,0,300));
     
     euler.setMode(OF_PRIMITIVE_LINES);
+    */
     
     glEnable(GL_POINT_SMOOTH);
     glPointSize(15);
@@ -54,9 +64,10 @@ void ofApp::draw(){
     
     cam.begin();
         ofSetColor(ofColor(200,200,200));
-        euler.draw();
+        //euler.draw();
+        grid.draw();
         ofSetColor(ofColor(100,200,240));
-        grid.drawFaces();
+        mBox.draw();
         ofSetColor(100);
         model.drawWireframe();
     cam.end();

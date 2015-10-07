@@ -20,11 +20,14 @@ class ofApp : public ofBaseApp{
 		void dragEvent(ofDragInfo dragInfo);
 		void gotMessage(ofMessage msg);
 		
-        ofEasyCam cam;
-        ofMesh grid, mMesh, euler;
-        ofVec3f gridCentroid, gridMin, gridMax, gridDim;
-        ofxAssimpModelLoader model;
-        ofLight light;
     
-        vector<ofPoint> mBox;
+        ofxAssimpModelLoader model;
+
+        ofVec3f mCentroid, mMin, mMax, mDim;
+        ofMesh mBox, grid, euler;
+        float gridUnit;
+        ofVec3f gridDivision;
+    
+        ofEasyCam cam;
+        ofLight light;
 };
