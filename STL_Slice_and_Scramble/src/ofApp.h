@@ -26,7 +26,7 @@ class ofApp : public ofBaseApp{
         ofVec3f mCentroid, mMin, mMax, mDim;
         ofMesh mBox, grid, euler;
         float gridSub;
-        ofVec3f gridDivision;
+        ofVec3f gridDivision, gridOffset;
     
         ofEasyCam cam;
         ofLight light;

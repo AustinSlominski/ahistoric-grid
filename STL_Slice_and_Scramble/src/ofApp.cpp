@@ -24,22 +24,25 @@ void ofApp::setup(){
     mBox.addVertex(ofPoint(-mDim.x,-mDim.y,mDim.z));
     mBox.addVertex(ofPoint(-mDim.x,-mDim.y,-mDim.z));
     */
-     
+    
+
     gridSub = 6;
     gridDivision = mDim/gridSub;
+    gridOffset = (-mDim/2);
     
-    for(int i=0;i<gridSub;i++){
-        for(int j=0;j<gridSub;j++){
-            for(int k=0;k<gridSub;k++){
-                grid.addVertex(ofPoint(gridDivision.x*k,gridDivision.y*j,gridDivision.z*i));
+    for(int i=0;i<=gridSub;i++){
+        for(int j=0;j<=gridSub;j++){
+            for(int k=0;k<=gridSub;k++){
+                grid.addVertex(ofPoint((gridDivision.x*k)+gridOffset.x,(gridDivision.y*j)+gridOffset.y,(gridDivision.z*i)+gridOffset.z));
             }
         }
     }
     
-    mBox.setupIndicesAuto();
+    //mBox.setupIndicesAuto();
     grid.setupIndicesAuto();
     mBox.setMode(OF_PRIMITIVE_LINE_STRIP);
     grid.setMode(OF_PRIMITIVE_POINTS);
+    
     //euler lines
     /*
     euler.addVertex(ofPoint(-300,0,0));
@@ -48,12 +51,11 @@ void ofApp::setup(){
     euler.addVertex(ofPoint(0,300,0));
     euler.addVertex(ofPoint(0,0,-300));
     euler.addVertex(ofPoint(0,0,300));
-    
     euler.setMode(OF_PRIMITIVE_LINES);
     */
     
     glEnable(GL_POINT_SMOOTH);
-    glPointSize(15);
+    glPointSize(5);
 }
 
 //--------------------------------------------------------------
@@ -65,6 +67,10 @@ void ofApp::update(){
 void ofApp::draw(){
     ofSetColor(255);
     ofEnableDepthTest();
+    ofEnableBlendMode(OF_BLENDMODE_ALPHA);
+    glShadeModel(GL_SMOOTH);
+    light.enable();
+    ofEnableSeparateSpecularLight();
     
     cam.begin();
         ofSetColor(ofColor(200,200,200));
@@ -73,7 +79,7 @@ void ofApp::draw(){
         ofSetColor(ofColor(100,200,240));
         mBox.draw();
         ofSetColor(100);
-        model.drawWireframe();
+        model.drawFaces();
     cam.end();
 }
 
